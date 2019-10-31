@@ -310,6 +310,60 @@ def demo_multi_track(vcap):
             break  # esc pressed
     vcap.release()
     cv2.destroyAllWindows()
+    
+def demo_single_track(vcap):
+
+    cv2.namedWindow("tracking")
+    #camera = cv2.VideoCapture('/home/dev/Downloads/20191017_154942(%E4%BE%A7).mp4')
+
+    tracker = cv2.TrackerCSRT_create()
+    # tracker = cv2.TrackerKCF_create()
+    # tracker = cv2.TrackerMOSSE_create()
+    init_once = False
+
+
+    c = 0
+    while c < 120:
+        ok, image = vcap.read()
+        c += 1
+    ok, image = vcap.read()
+    if not ok:
+        print('Failed to read video')
+        exit()
+
+    bbox1 = cv2.selectROI('tracking', image)
+    # bbox2 = cv2.selectROI('tracking', image)
+    # bbox3 = cv2.selectROI('tracking', image)
+
+    while vcap.isOpened():
+        ok, image = vcap.read()
+        if not ok:
+            print('no image to read')
+            break
+
+        if not init_once:
+            # ok = tracker.add(cv2.MultiTracker_create(), image, bbox1)
+            ok = tracker.init(image, bbox1)
+            # ok = tracker.add(cv2.MultiTracker_create(), image, bbox2)
+            # ok = tracker.add(cv2.MultiTracker_create(), image, bbox3)
+            init_once = True
+
+        ok, boxes = tracker.update(image)
+        print(ok, boxes)
+
+        # for newbox in boxes:
+            # p1 = (int(newbox[0]), int(newbox[1]))
+            # p2 = (int(newbox[0] + newbox[2]), int(newbox[1] + newbox[3]))
+            # cv2.rectangle(image, p1, p2, (200, 0, 0))
+        x, y, w, h = [int(v) for v in boxes]
+        cv2.rectangle(image, (x, y), (x + w, y + h), (200, 0, 0), 2)
+
+        cv2.imshow('tracking', image)
+        k = cv2.waitKey(1)
+        if k == 27:
+            break  # esc pressed
+    vcap.release()
+    cv2.destroyAllWindows()
 
 def save_video(vcap):
     fourcc = cv2.VideoWriter_fourcc(*'XVID')  # 保存视频的编码
