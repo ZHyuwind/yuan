@@ -12,3 +12,8 @@ opencv3自带8种目标跟踪算法，CRST效果最好，速度稍慢。
 6、TLD：报错很多
 7、MOSSE Tracker：速度快，准确率比CSRT和KCF低
 8、GOTURN Tracker：深度学习基础的目标检测器，需额外模型。
+
+GOTURN Tracker参考资料：
+https://github.com/spmallick/learnopencv/tree/master/GOTURN
+
+https://blog.csdn.net/zmdsjtu/article/details/81630366
