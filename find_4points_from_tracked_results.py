@@ -131,6 +131,7 @@ def plot_image(path):
     idx = select_main_idx(file,file_name_list)
     lwx, lwy, rwx, rwy, lax, lay, rax, ray = statistic_4_points(file)
     # plt.title('vault')
+    img_name = path.split('/')[-1].split('-')[0]
     plt.figure(figsize=(24,13.5),dpi=80)
 
     ax = plt.gca()
@@ -142,6 +143,7 @@ def plot_image(path):
     plt.scatter(rax[idx], ray[idx], color='yellow',label='right_ankle')
 
     plt.legend(loc='upper center')
+    plt.savefig('{}.png'.format(img_name))
     plt.show()
 
 
